@@ -46,7 +46,7 @@ router.put("/:id",verifyToken, async (req, res) => {
   });
 
 // DELETE POST
-router.delete("/:id", async (req, res) => {
+router.delete("/:id",verifyToken, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     // console.log(post);
