@@ -1,29 +1,31 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const UserRoutes=require("./src/controller/userController");
-const authRoutes = require("./src/controller/auth")
-const cors=require('cors');
-const jwt = require("jsonwebtoken");
+const UserRoutes = require("./src/controller/userController");
+const AuthRoutes = require("./src/controller/auth");
+const PostRoutes = require("./src/controller/post");
+const CategoryRoutes = require("./src/controller/category");
+const cors = require("cors");
+const dotenv = require("dotenv");
 
+// MIDDLEWARE
 const app = express();
 app.use(express.json());
-app.use(cors())
+app.use(cors());
+dotenv.config();
+
 const port = 5002;
 
-
-const db_url =
-  "mongodb+srv://manish2020:manish2020@cluster0.jxgvuf9.mongodb.net/blog-backend";
-
+// DB CONFIGURE
 mongoose
-  .connect(db_url)
+  .connect(process.env.db_url)
   .then(() => console.log("url connect success"))
   .catch((err) => console.log(err));
 
+app.use("/api/user", UserRoutes);
+app.use("/auth", AuthRoutes);
+app.use("/api/post", PostRoutes);
+app.use("/category", CategoryRoutes);
 
-  app.use("/api/user",UserRoutes);
-  app.use("/auth", authRoutes);
-  
 app.listen(port, () => {
   console.log(`server is up on  ${port}`);
 });
-

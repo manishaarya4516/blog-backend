@@ -1,7 +1,7 @@
-const { Timestamp } = require("mongodb");
+const { timestamps } = require("mongodb");
 const mongoose = require("mongoose");
 
-const postSchema = new mongoose.Schema({
+const PostSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -12,7 +12,7 @@ const postSchema = new mongoose.Schema({
   },
   photo: {
     type: String,
-    required: true,
+    // required: true,
   },
   username:{
     type:String,
@@ -24,6 +24,6 @@ const postSchema = new mongoose.Schema({
   }
 },{timestamps:true});
 
-const post = mongoose.model("post", postSchema);
+const Post = mongoose.model("post", PostSchema);
 
-module.exports = post;
+module.exports = Post;

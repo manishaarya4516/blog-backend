@@ -2,12 +2,14 @@ const express = require("express");
 const router = express.Router();
 const User = require("../model/userSchema");
 const bcrypt = require("bcrypt");
-const user = require("../model/userSchema");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
-// REGISTER
+//  JWT
 
-router.post("/reg", async (req, res) => {
-  console.log("error occur");
+// REGISTER AUTHENTICATION
+
+router.post("/register", async (req, res) => {
   try {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -22,22 +24,28 @@ router.post("/reg", async (req, res) => {
     res.status(500).json(err);
   }
 });
+//  LOGIN AUTHENTICATION
 
 router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({
       email: req.body.email,
     });
-    !user && res.status(500).json("invalid mail")
+    // !user && res.status(500).json("invalid mail")
 
-    const validate= await bcrypt.compare(req.body.password, user.password);
-    !validate && res.status(500).json("invalid mail");
+    const validate = await bcrypt.compare(req.body.password, user.password);
+    if (!validate && !user) {
+      return res.sendStatus(500).json("Invalid credential");
+    }
+    const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+    const { password, ...others } = user._doc;
+    // console.log(others);
 
-    const{password, ...others} = user._doc;
-    res.status(200).json (others);
-    
+    res.status(200).json({accessToken ,others});
   } catch (err) {
-    res.status(500).json(err);
+    res.json(err);
   }
 });
 
