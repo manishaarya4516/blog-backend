@@ -4,7 +4,7 @@ const User = require("../model/userSchema");
 const Post = require("../model/post");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const verifyToken=require("../token");
+const verifyToken=require("../controller/token");
 
 router.put("/:id",verifyToken, async (req, res) => {
   if (req.body.userId === req.params.id) {
