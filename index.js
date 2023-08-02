@@ -17,7 +17,7 @@ const port = 5002;
 
 // DB CONFIGURE
 mongoose
-  .connect(process.env.db_url)
+  .connect(process.env.DB_URL)
   .then(() => console.log("url connect success"))
   .catch((err) => console.log(err));
 
