@@ -18,4 +18,4 @@ COPY . /app/
 EXPOSE 5002
 
 # Start the application when the container starts
-CMD ["node", "app.js"]
+CMD ["node", "index.js"]
